@@ -1,0 +1,84 @@
+body {
+  background:aliceblue;
+  color:royalblue;
+  text-align: center;
+}
+
+h1 {
+  text-shadow: 1px 1px 2px grey;
+}
+.searchBox {
+  
+}
+
+input {
+  width: 400px;
+  height: 30px;
+  font-size: 120%;
+  margin:20px;
+}
+
+button {
+  background-color: skyblue;
+  border:none;
+  height: 35px;
+  width: 100px;
+  border-radius: 4px;
+  font-size: 1.2em;
+  color:white;
+  font-weight: bold;
+}
+.movie_list {
+  margin:20px 30px;
+}
+
+.movie-card {
+  background-color: pink;
+  width: 65%;
+  transition: .3s;
+  box-shadow: 1px 1px 1px grey;
+  margin-left: auto;
+  margin-right: auto;
+}
+.movie-card:hover {
+  transform: translateY(0.3em);
+}
+h3 {
+  text-align: center;
+  margin:10px;
+}
+
+.tiny-img {
+  width: 50px;
+  height: 50px;
+  float:right;
+}
+
+p {
+  line-height: 40px;
+  text-align: left;
+  padding:5px;
+}
+
+.movie-detail {
+  background-color: pink;
+  width: 65%;
+  transition: .3s;
+  box-shadow: 2px 2px 2px grey;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+.movie-detail:hover {
+  transform: translateY(0.3em);
+}
+.poster {
+  max-width: 62%;
+  margin-left: 20px;
+}
+
+.movie-plot {
+  float:right;
+  width: 35%;
+  margin-right: 5px;
+}
