@@ -1,13 +1,26 @@
 $(document).ready(function(){
-  //use form .submit() method
-  // $('<img />',{src: 'http://google.com',width:200px})
-  // {
-  //   url: 'http://www.omdbapi.com/',
-  //   data: {s:searchString},
-  //    dataType: 'json'
-
-  // }
-  //'&r=json'
+  var page = 0;
+  var loadDataToDisplay = function(response) {
+    if (response.Error) {
+      console.log(response.Error);
+      var $msg = $('<div>').text(response.Error);
+      $('.movie_list').append($msg);
+    } else {
+      var movies = response.Search;
+      movies.forEach(function(movie){
+        // handlebars template
+        var templateString = $("#item-template").html();
+        var templateFunction = Handlebars.compile(templateString);
+        var image = movie.Poster;
+        if (movie.Poster === 'N/A') {
+          image = "http://mteliza.vic.cricket.com.au/files/819/images/imageNotAvailable.jpg";
+        }
+        var html = templateFunction({title: movie.Title,image_url: image});
+        var $newElem = $('<div>').addClass('movie-card').html(html);
+        $('.movie_list').append($newElem);
+      });
+    }
+  }
 
   $('#search-form').on('submit',function(event){
     event.preventDefault();
@@ -19,25 +32,8 @@ $(document).ready(function(){
       dataType: 'json'
     }).done(function(response){
         $('.movie_list').empty();
-        if (response.Error) {
-          console.log(response.Error);
-          var $msg = $('<div>').text(response.Error);
-          $('.movie_list').append($msg);
-        } else {
-          var movies = response.Search;
-          movies.forEach(function(movie){
-            // handlebars template
-            var templateString = $("#item-template").html();
-            var templateFunction = Handlebars.compile(templateString);
-            var image = movie.Poster;
-            if (movie.Poster === 'N/A') {
-              image = "http://mteliza.vic.cricket.com.au/files/819/images/imageNotAvailable.jpg";
-            }
-            var html = templateFunction({title: movie.Title,image_url: image});
-            var $newElem = $('<div>').addClass('movie-card').html(html);
-            $('.movie_list').append($newElem);
-          });
-        }
+        loadDataToDisplay(response);
+        page = 1;
     });
   });
 
@@ -67,14 +63,24 @@ $(document).ready(function(){
     });
   });
 
+
   //load more button event
   $('#load-more-btn').on('click',function(event){
-    console.log(this);
-    console.log(event.target);
-    console.log("load more...");
+    // console.log(this);
+    // console.log(event.target);
+    // console.log("load more...");
+    page ++;
+    $.ajax({
+      url: 'http://www.omdbapi.com/',
+      data: {s: $('input').val(), page: page}
+    }).done(function(response){
+      console.log(response);
+      loadDataToDisplay(response);
+    });
+
   });
 
-  
+
 
 
 

@@ -17,4 +17,10 @@ Wednesday 4/5/2016
     </div>
   "
 
+- 'this' : context
+- 1.default binding   --  window object
+- 2.implicit binding/containing object   
+- 3.explicit binding 
+- 4.new keyword
+
 
