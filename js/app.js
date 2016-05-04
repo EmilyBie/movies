@@ -1,42 +1,63 @@
 $(document).ready(function(){
+  //use form .submit() method
+  // $('<img />',{src: 'http://google.com',width:200px})
+  // {
+  //   url: 'http://www.omdbapi.com/',
+  //   data: {s:searchString},
+  //    dataType: 'json'
 
-  $('#searchBtn').on('click',function(){
+  // }
+  //'&r=json'
+
+  $('#search-form').on('submit',function(event){
+    event.preventDefault();
     var keyword = $('input').val();
+    console.log("keyword:"+keyword);
     $.ajax({
-      url: "http://www.omdbapi.com/?s="+keyword,
-      method: 'get'
+      url: 'http://www.omdbapi.com/',
+      data: {s: keyword},
+      dataType: 'json'
     }).done(function(response){
         $('.movie_list').empty();
         if (response.Error) {
           console.log(response.Error);
-          $msg = $('<div>').text(response.Error);
+          var $msg = $('<div>').text(response.Error);
           $('.movie_list').append($msg);
         } else {
           var movies = response.Search;
           movies.forEach(function(movie){
-            var $title = $('<p>').text(movie.Title);
-            var $img = $('<img>').addClass('tiny-img').attr('src',movie.Poster);
-            var $movie_card = $('<div>').addClass('movie-card');
-            $movie_card.append($img,$title);
-            $('.movie_list').append($movie_card);
+            // handlebars template
+            var templateString = $("#item-template").html();
+            var templateFunction = Handlebars.compile(templateString);
+            var image = movie.Poster;
+            if (movie.Poster === 'N/A') {
+              image = "http://mteliza.vic.cricket.com.au/files/819/images/imageNotAvailable.jpg";
+            }
+            var html = templateFunction({title: movie.Title,image_url: image});
+            var $newElem = $('<div>').addClass('movie-card').html(html);
+            $('.movie_list').append($newElem);
           });
         }
     });
   });
 
   $('.movie_list').on('click','p',function(event) {
-    debugger
     var title = $(event.target).text();
     console.log(title);
     $.ajax({
-      url: "http://www.omdbapi.com/?t="+title,
+      url: "http://www.omdbapi.com/",
+      data: {t: title},
       method: 'get'
     }).done(function(response) {
 
       var movie = response;
       $('.movie_list').empty();
       $h3 = $('<h3>').text(movie.Title);
-      $img = $('<img>').addClass("poster").attr('src',movie.Poster);
+      var image_url = movie.Poster;
+      if (movie.Poster === 'N/A') {
+        image_url = "http://mteliza.vic.cricket.com.au/files/819/images/imageNotAvailable.jpg";
+      }
+      $img = $('<img>').addClass("poster").attr('src',image_url);
       $imageDiv = $('<div>').addClass('poster-image');
       $imageDiv.append($img);
       $plot = $('<div>').addClass('movie-plot').text(movie.Plot);
@@ -45,6 +66,21 @@ $(document).ready(function(){
       $('.movie_list').append($movie_detail);
     });
   });
+
+  //load more button event
+  $('#load-more-btn').on('click',function(event){
+    console.log(this);
+    console.log(event.target);
+    console.log("load more...");
+  });
+
+  
+
+
+
+
+
+
 
 
 });

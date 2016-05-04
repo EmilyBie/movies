@@ -82,3 +82,7 @@ p {
   width: 35%;
   margin-right: 5px;
 }
+
+#load-more-btn {
+  width: 150px;
+}
